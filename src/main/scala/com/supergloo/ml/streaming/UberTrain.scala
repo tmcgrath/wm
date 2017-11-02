@@ -27,6 +27,9 @@ object UberTrain {
 
     val conf = new SparkConf().setAppName("Uber Train")
     conf.setIfMissing("spark.master", "local[*]")
+    conf.setIfMissing("spark.cassandra.connection.host", "localhost")
+//    conf.setIfMissing("spark.cassandra.auth.username", "cassandra")
+//    conf.setIfMissing("spark.cassandra.auth.password", "cassandra")
 
     val spark = SparkSession
       .builder()
@@ -39,7 +42,7 @@ object UberTrain {
     val df = spark
       .read
       .format("org.apache.spark.sql.cassandra")
-      .options(Map( "table" -> "source_data", "keyspace" -> "wm"))
+      .options(Map( "table" -> "source_data", "keyspace" -> "wm")) // TODO changeme POC - so hardcoded
       .load() //.as[Uber] // there's really no need to marshall to a case class
                           // so commenting out
 
@@ -58,8 +61,8 @@ object UberTrain {
 //      .as[Uber]
 //
     df.cache
-    df.show
-    df.schema
+//    df.show
+//    df.schema
 
     val featureCols = Array("lat", "lon")
     val assembler = new VectorAssembler().setInputCols(featureCols).setOutputCol("features")
@@ -91,18 +94,17 @@ object UberTrain {
     // number of pickups per cluster
     categories.groupBy("prediction").count().show()
 
-
     // pick your preference DataFrame API above or can use SQL directly
     spark.sql(" select prediction, count(prediction) as count from uber group by prediction").show
     spark.sql("SELECT hour(uber.dt) as hr,count(prediction) as ct FROM uber group By hour(uber.dt)").show
 
-    // to save the categories dataframe as json data
-    //  categories.select("dt", "base", "prediction").write.format("json").save("uberclusterstest")
     //  to save the model
-    //  model.write.overwrite().save("/user/user01/data/savemodel")
+      model.write.overwrite().save("/tmp/savemodel")
     //  to re-load the model
     //  val sameModel = KMeansModel.load("/user/user01/data/savemodel")
+
+    spark.stop()
+    sys.exit(0)
   }
+
 }
-case class Uber(dt: java.sql.Timestamp, lat: BigDecimal,
-                lon: BigDecimal, base: String)

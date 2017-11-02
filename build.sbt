@@ -36,6 +36,7 @@ lazy val sparkDependencies = Seq(
 //  "org.apache.spark" %% "spark-hive" % sparkVersion,
   "org.apache.spark" %% "spark-mllib" % sparkVersion,
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
+  "org.apache.spark" %% "spark-streaming-kafka-0-8" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % connectorVersion // assumes running in DSE; move to `otherDependencies` if OSS
 )
 
