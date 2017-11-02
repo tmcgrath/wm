@@ -17,9 +17,9 @@ import org.apache.spark.ml.clustering.KMeans
   *
   * Consider this refactor a hat tip to the original
   *
-  * Assumes the training data csv has been downloaded from
-  * https://github.com/caroljmcdonald/spark-ml-kmeans-uber/tree/master/data
-  * and saved in /tmp/csv as you'll see in code below
+  * Training CSV in data/ folder
+  * Code below assumes the CSV is saved
+  * in /tmp/csv as you'll see in code below
   */
 object UberTrain {
 
