@@ -37,7 +37,7 @@ object UberTrain {
     import org.apache.spark.sql.functions._
 
     val df = spark.read.option("header", "false")
-      .csv("file:///tmp/csv/*.csv")
+      .csv("file:///tmp/csv/*.csv") // TODO - update me for proper location
       .withColumnRenamed("_c0", "dt")
       .withColumnRenamed("_c1", "lat")
       .withColumnRenamed("_c2", "lon")
