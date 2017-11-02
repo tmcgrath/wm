@@ -1,4 +1,4 @@
-name := "spark-2-streaming"
+name := "ml-example"
  
 version := "1.0"
 
@@ -33,7 +33,7 @@ lazy val intellijRunner = project.in(file("intellijRunner")).dependsOn(RootProje
 lazy val sparkDependencies = Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
-  "org.apache.spark" %% "spark-hive" % sparkVersion,
+//  "org.apache.spark" %% "spark-hive" % sparkVersion,
   "org.apache.spark" %% "spark-mllib" % sparkVersion,
   "org.apache.spark" %% "spark-streaming" % sparkVersion,
   "com.datastax.spark" %% "spark-cassandra-connector" % connectorVersion // assumes running in DSE; move to `otherDependencies` if OSS

@@ -36,18 +36,27 @@ object UberTrain {
     import spark.sqlContext.implicits._
     import org.apache.spark.sql.functions._
 
-    val df = spark.read.option("header", "false")
-      .csv("file:///tmp/csv/*.csv") // TODO - update me for proper location
-      .withColumnRenamed("_c0", "dt")
-      .withColumnRenamed("_c1", "lat")
-      .withColumnRenamed("_c2", "lon")
-      .withColumnRenamed("_c3", "base")
-      .withColumn("dt", to_date($"dt"))
-      .withColumn("lat", $"lat".cast("decimal"))
-      .withColumn("lon", $"lon".cast("decimal"))
-      .withColumn("base", $"base")
-      .as[Uber]
+    val df = spark
+      .read
+      .format("org.apache.spark.sql.cassandra")
+      .options(Map( "table" -> "source_data", "keyspace" -> "wm"))
+      .load() //.as[Uber] // there's really no need to marshall to a case class
+                          // so commenting out
 
+    df.show(10)
+//
+//    val df = spark.read.option("header", "false")
+//      .csv("file:///tmp/csv/*.csv") // TODO - update me for proper location
+//      .withColumnRenamed("_c0", "dt")
+//      .withColumnRenamed("_c1", "lat")
+//      .withColumnRenamed("_c2", "lon")
+//      .withColumnRenamed("_c3", "base")
+//      .withColumn("dt", to_date($"dt"))
+//      .withColumn("lat", $"lat".cast("decimal"))
+//      .withColumn("lon", $"lon".cast("decimal"))
+//      .withColumn("base", $"base")
+//      .as[Uber]
+//
     df.cache
     df.show
     df.schema
