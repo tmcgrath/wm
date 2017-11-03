@@ -18,7 +18,12 @@ of saved model from TrainModel step
 
 Compile and run com.supergloo.ml.streaming.UberStream
 
-You can send test data to the Kafka stream with kafka cli tools; i.e.
+You can send test data to the Kafka stream on your laptop with kafka cli tools; i.e.
 
-```kafka-console-producer.sh --broker-list localhost:9092 --topic raw_uber
+
+* Start Zookeeper ```bin/zookeeper-server-start.sh config/zookeeper.properties```
+* Start Kafka ```bin/kafka-server-start.sh config/server.properties```
+* Create Kafka topic ```
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic raw_uber```
+* Send Uber Data to Kafka ```bin/kafka-console-producer.sh --broker-list localhost:9092 --topic raw_uber
   --new-producer < sample-uber.csv```

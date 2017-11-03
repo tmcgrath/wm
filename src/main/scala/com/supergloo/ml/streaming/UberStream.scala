@@ -76,22 +76,12 @@ object UberStream {
         // get cluster categories from  model
         val categories = model.transform(df2)
         categories.show
-
-//        categories.createOrReplaceTempView("uber")
-
-        // select values to join with cluster centers
-        // convert results to JSON string to send to topic
-//
-//        val clust = categories.select($"dt", $"lat", $"lon", $"base", $"prediction".alias("cid")).orderBy($"dt")
-//        clust.show(10)
       }
     }
 
     //Kick off
     ssc.start()
-
     ssc.awaitTermination()
-
     ssc.stop()
   }
 }
